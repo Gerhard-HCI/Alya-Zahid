@@ -319,6 +319,31 @@
       .disc-switch button{flex:1 1 0}
     }
     @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  
+    /* ── TAXI CARD — shown to the driver (hex only: iOS Safari) ── */
+    .map-btn.tx-btn{background-color:#FFF6E0!important;color:#8A5E12!important;border-color:rgba(176,124,34,.35)!important;font-weight:600}
+    .tx-ov{position:fixed;top:0;left:0;right:0;bottom:0;background-color:rgba(10,15,30,.72);z-index:100000;display:none;align-items:flex-end;justify-content:center}
+    .tx-ov.on{display:flex}
+    .tx-sheet{background-color:#FAF8F4;width:100%;max-width:620px;max-height:92vh;border-radius:22px 22px 0 0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 18px calc(24px + env(safe-area-inset-bottom));animation:txUp .3s cubic-bezier(.16,1,.3,1)}
+    @keyframes txUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+    .tx-grab{width:38px;height:4px;background-color:#C5CBD6;border-radius:99px;margin:0 auto 14px}
+    .tx-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+    .tx-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;font-weight:500;color:#141B2D;line-height:1.2}
+    .tx-title-jp{font-family:'Hiragino Mincho ProN','Yu Mincho','Noto Serif JP',serif;font-size:15px;color:#3A4866;margin-top:3px}
+    .tx-close{width:40px;height:40px;border-radius:50%;flex-shrink:0;font-size:24px;line-height:1;display:flex;align-items:center;justify-content:center;background-color:#FFFFFF!important;color:#55607A!important;border:1px solid #E2E6EF!important}
+    .tx-card{background-color:#FFFFFF;border-radius:16px;padding:24px 18px;text-align:center;border:1px solid #E2E6EF}
+    .tx-to{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#55607A;margin-bottom:12px}
+    .tx-name{font-family:'Hiragino Mincho ProN','Yu Mincho','Noto Serif JP',serif;font-size:30px;line-height:1.3;color:#000000;font-weight:600;margin-bottom:6px}
+    .tx-name-en{font-size:13px;color:#55607A;margin-bottom:18px}
+    .tx-addr{font-family:'Hiragino Mincho ProN','Yu Mincho','Noto Serif JP',serif;font-size:25px;line-height:1.65;color:#000000;font-weight:600;padding:16px 8px;border-top:2px solid #000000;border-bottom:2px solid #000000;word-break:break-word}
+    .tx-ask{font-family:'Hiragino Mincho ProN','Yu Mincho','Noto Serif JP',serif;font-size:20px;color:#000000;margin-top:18px;line-height:1.5}
+    .tx-ask-en{font-size:12px;color:#55607A;margin-top:5px;font-style:italic}
+    .tx-acts{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+    .tx-act{flex:1 1 30%;min-height:46px;padding:11px 8px;border-radius:10px;font-size:13px;font-weight:600;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:5px;border:1px solid #D6DCE8!important;background-color:#FFFFFF!important;color:#2A3450!important}
+    .tx-act.pri{background-color:#131e36!important;color:#FFFFFF!important;border-color:#131e36!important}
+    .tx-act.go{background-color:#FFF6E0!important;color:#8A5E12!important;border-color:rgba(176,124,34,.35)!important}
+    .tx-foot{font-size:11.5px;color:#55607A;text-align:center;margin-top:16px;padding-top:12px;border-top:1px solid #E2E6EF;line-height:1.6}
+    .tx-foot em{color:#7A869E}
   </style>
 </head>
 <body style="background-color:#FAF8F4">
@@ -327,7 +352,7 @@
   <div class="hdr-top">
     <div class="hdr-left">
       <div>
-        <div class="hdr-dest">Japan · Autumn 2026<span class="hdr-ver" id="hdr-ver">v3</span></div>
+        <div class="hdr-dest">Japan · Autumn 2026<span class="hdr-ver" id="hdr-ver">v4</span></div>
         <div class="hdr-hc">Happy Camper</div>
       </div>
     </div>
@@ -362,6 +387,7 @@
   <section id="tab-statement" class="tab-panel" aria-label="Statement" style="background-color:#FAF8F4"></section>
   <section id="tab-emergency" class="tab-panel" aria-label="Emergency" style="background-color:#FAF8F4"></section>
 </main>
+<div class="tx-ov" id="tx-ov" onclick="if(event.target===this)closeTaxi()"><div class="tx-sheet" role="dialog" aria-modal="true" aria-label="Show the driver"><div class="tx-grab"></div><div class="tx-head"><div><div class="tx-title">Show the driver</div><div class="tx-title-jp">タクシーの運転手にお見せください</div></div><button type="button" class="tx-close" onclick="closeTaxi()" aria-label="Close">&times;</button></div><div id="tx-body"></div><div class="tx-foot">住所は Google マップの日本語表記のとおりです。<br><em>Address as Google Maps shows it in Japanese.</em></div></div></div>
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -374,7 +400,7 @@
            CANVAS · Confirmation · Budget Izu · Wish List · Diet
 ═══════════════════════════════════════════════════════ */
 var CONFIG = {
-  version: 'v3',
+  version: 'v4',
   tripTitle: 'Japan in Autumn',
   client: 'Alya Zahid & Family',
   startDate: '2026-11-02',
@@ -942,6 +968,91 @@ function loadWeather(){
 
 /* ══════════════ RENDER: STOP ══════════════ */
 var ICONS={flight:'✈️',transport:'🚄',restaurant:'🍽️',activity:'🧭',hotel:'🏨'};
+/* ═══ JAPANESE PLACE DIRECTORY · taxi card ═══
+   addr = address in Japanese as Google Maps shows it to a Japanese user; each entry
+   cross-checked against the Google Places result (postcode + romanised address).
+   TAXI_KEY maps a stop's q string to its entry; a stop can also carry ja:'key' directly. */
+var JA_DIR = {
+  narita2:{ name:'成田国際空港 第2ターミナル', en:'Narita Airport Terminal 2', addr:'〒282-0004 千葉県成田市古込字古込1-1', tel:'' },
+  okura:{ name:'The Okura Tokyo（オークラ東京）', en:'The Okura Tokyo', addr:'〒105-0001 東京都港区虎ノ門2-10-4', tel:'+81335820111' },
+  tokyostn:{ name:'東京駅', en:'Tokyo Station', addr:'〒100-0005 東京都千代田区丸の内1-9-1', tel:'' },
+  izukogen:{ name:'伊豆高原駅', en:'Izu-Kōgen Station', addr:'〒413-0232 静岡県伊東市八幡野1183', tel:'' },
+  omuro:{ name:'大室山リフト', en:'Mt. Ōmuro Chairlift', addr:'〒413-0231 静岡県伊東市池672-2', tel:'' },
+  shaboten:{ name:'伊豆シャボテン動物公園', en:'Izu Shaboten Zoo', addr:'〒413-0231 静岡県伊東市富戸1317-13', tel:'' },
+  kadowaki:{ name:'城ヶ崎海岸 門脇吊橋', en:'Kadowaki Suspension Bridge', addr:'〒413-0231 静岡県伊東市富戸842-65', tel:'' },
+  nanadaru:{ name:'河津七滝', en:'Kawazu Seven Waterfalls', addr:'〒413-0501 静岡県賀茂郡河津町梨本', tel:'' },
+  nakase:{ name:'中瀬邸', en:'Nakase Residence', addr:'〒410-3611 静岡県賀茂郡松崎町松崎315-1', tel:'' },
+  dogashima:{ name:'堂ヶ島マリン（洞くつめぐり遊覧船）', en:'Dōgashima Marine', addr:'〒410-3514 静岡県賀茂郡西伊豆町仁科2060', tel:'' },
+  toi:{ name:'土肥港', en:'Toi Port', addr:'〒410-3302 静岡県伊豆市土肥2920', tel:'' },
+  shuzenji:{ name:'修禅寺', en:'Shuzenji Temple', addr:'〒410-2416 静岡県伊豆市修善寺964', tel:'' },
+  numazu:{ name:'沼津港深海水族館', en:'Numazu Deep Sea Aquarium', addr:'〒410-0845 静岡県沼津市千本港町83', tel:'' },
+  chureito:{ name:'新倉山浅間公園 忠霊塔', en:'Chūreitō Pagoda', addr:'〒403-0011 山梨県富士吉田市浅間2-4-1', tel:'' },
+  kachikachi:{ name:'〜河口湖〜富士山パノラマロープウェイ', en:'Mt. Fuji Panoramic Ropeway', addr:'〒401-0303 山梨県南都留郡富士河口湖町浅川1163-1', tel:'' },
+  oshino:{ name:'忍野八海', en:'Oshino Hakkai', addr:'〒401-0511 山梨県南都留郡忍野村忍草', tel:'' },
+  senzu:{ name:'千頭駅（大井川鐵道）', en:'Senzu Station', addr:'〒428-0411 静岡県榛原郡川根本町千頭1216-5', tel:'' },
+  okuoi:{ name:'奥大井湖上駅', en:'Okuōikojō Station', addr:'〒428-0402 静岡県榛原郡川根本町犬間', tel:'' },
+  shizuokastn:{ name:'静岡駅', en:'Shizuoka Station', addr:'〒420-0851 静岡県静岡市葵区黒金町', tel:'' },
+  kyotostn:{ name:'京都駅', en:'Kyoto Station', addr:'〒600-8216 京都府京都市下京区東塩小路釜殿町', tel:'' },
+  capella:{ name:'カペラ京都', en:'Capella Kyoto', addr:'〒605-0811 京都府京都市東山区小松町130', tel:'+81755418877' },
+  kenninji:{ name:'建仁寺', en:'Kennin-ji', addr:'〒605-0811 京都府京都市東山区小松町584', tel:'' },
+  teamlab:{ name:'チームラボボーダレス（麻布台ヒルズ）', en:'teamLab Borderless', addr:'〒106-0041 東京都港区虎ノ門5-9-9 麻布台ヒルズ ガーデンプラザB B1', tel:'' }
+};
+var TAXI_KEY = {
+  'Narita Airport Terminal 2':'narita2',
+  'The Okura Tokyo':'okura',
+  'Tokyo Station':'tokyostn',
+  'Izu-Kōgen Station':'izukogen',
+  'Mount Omuro Climbing Chairlifts':'omuro',
+  'Izu Shaboten Zoo':'shaboten',
+  'Kadowaki Suspension Bridge':'kadowaki',
+  'Kawazu Seven Waterfalls':'nanadaru',
+  'Nakase Residence Matsuzaki':'nakase',
+  'Dogashima Marine':'dogashima',
+  'Toi Port':'toi',
+  'Shuzenji Temple':'shuzenji',
+  'Numazu Deep Sea Aquarium':'numazu',
+  'Chureito Pagoda':'chureito',
+  'Mt. Fuji Panoramic Ropeway':'kachikachi',
+  'Oshino Hakkai':'oshino',
+  'Senzu Station':'senzu',
+  'Okuōikojō Station':'okuoi',
+  'Shizuoka Station':'shizuokastn',
+  'Kyoto Station':'kyotostn',
+  'Capella Kyoto':'capella',
+  'Kenninji Temple':'kenninji',
+  'teamLab Borderless':'teamlab'
+};
+function taxiKey(s){
+  if(!s||s.type==='flight'||s.status==='suggestion'||s.badgeType==='suggestion')return null;
+  var k=s.ja||TAXI_KEY[s.q];return(k&&JA_DIR[k])?k:null;
+}
+function taxiBtn(k,di,si){
+  return '<button type="button" class="map-btn tx-btn" onclick="showTaxi(\''+k+'\','+di+','+si+')" aria-label="Show the address in Japanese to a taxi driver">🚕 Taxi</button>';
+}
+window.showTaxi=function(k,di,si){
+  var j=JA_DIR[k];if(!j)return;
+  var s=null;try{s=DAYS[di].stops[si];}catch(e){}
+  var maps=s?gm(s.q,s.mapsLink):'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(j.addr);
+  var extra='';try{extra=(function(s,di){var d=dayDriver(DAYS[di]);if(d&&s&&!s.noDriver)return '<a href="'+contactHref(d)+'" target="_blank" rel="noopener" class="tx-act">'+(d.icon||'🚐')+' Your driver</a>';return '<a href="'+CONFIG.goTaxi+'" target="_blank" rel="noopener" class="tx-act go">🚕 GO Taxi</a>';})(s,di);}catch(e){}
+  document.getElementById('tx-body').innerHTML=''
+    +'<div class="tx-card">'
+    +'<div class="tx-to">行き先 · DESTINATION</div>'
+    +'<div class="tx-name">'+esc(j.name)+'</div>'
+    +'<div class="tx-name-en">'+esc(j.en)+'</div>'
+    +'<div class="tx-addr">'+esc(j.addr)+'</div>'
+    +'<div class="tx-ask">ここまでお願いします。</div>'
+    +'<div class="tx-ask-en">Please take me here.</div>'
+    +'</div>'
+    +'<div class="tx-acts">'
+    +'<a href="'+maps+'" target="_blank" rel="noopener" class="tx-act pri">📍 Maps</a>'
+    +(j.tel?'<a href="tel:'+j.tel+'" class="tx-act">📞 Call venue</a>':'')
+    +extra
+    +'</div>';
+  document.getElementById('tx-ov').classList.add('on');
+};
+window.closeTaxi=function(){var o=document.getElementById('tx-ov');if(o)o.classList.remove('on');};
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeTaxi();});
+
 function renderStop(stop,di,si,drv){
   var hidden=stop.status==='suggestion';
   var pending=stop.status==='pending'||hidden;
@@ -965,10 +1076,11 @@ function renderStop(stop,di,si,drv){
   if(stop.alert)h+='<div class="stop-alert">⚠ '+esc(stop.alert)+'</div>';
   if(hasLoc){
     var move=stop.type!=='flight';
+    var tk=move?taxiKey(stop):null;
     h+='<div class="map-actions">'
       +'<a href="'+gm(stop.q,stop.mapsLink)+'" target="_blank" rel="noopener" class="map-btn mp" aria-label="Open '+esc(stop.title)+' in Google Maps">📍 Maps</a>'
       +'<a href="'+(stop.mapsLink&&!stop.q?stop.mapsLink:nav(stop.addr||stop.q,stop.q))+'" target="_blank" rel="noopener" class="map-btn" aria-label="Directions to '+esc(stop.title)+'">🧭 Directions</a>'
-      +(move&&drv&&!stop.noDriver?'<a href="'+contactHref(drv)+'" target="_blank" rel="noopener" class="map-btn drv" aria-label="Contact your driver">'+(drv.icon||'🚐')+' Driver</a>'
+      +(tk?taxiBtn(tk,di,si):move&&drv&&!stop.noDriver?'<a href="'+contactHref(drv)+'" target="_blank" rel="noopener" class="map-btn drv" aria-label="Contact your driver">'+(drv.icon||'🚐')+' Driver</a>'
         :(move&&stop.taxi?'<a href="'+CONFIG.goTaxi+'" target="_blank" rel="noopener" class="map-btn taxi" aria-label="Book a GO taxi">🚕 GO Taxi</a>':''))
       +'<button type="button" class="map-btn" onclick="copyAddr('+di+','+si+')" aria-label="Copy address">⧉ Copy</button>'
       +'</div>';
