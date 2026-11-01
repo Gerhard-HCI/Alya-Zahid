@@ -319,31 +319,6 @@
       .disc-switch button{flex:1 1 0}
     }
     @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-  
-    /* ── TAXI CARD — shown to the driver (hex only: iOS Safari) ── */
-    .map-btn.tx-btn{background-color:#FFF6E0!important;color:#8A5E12!important;border-color:rgba(176,124,34,.35)!important;font-weight:600}
-    .tx-ov{position:fixed;top:0;left:0;right:0;bottom:0;background-color:rgba(10,15,30,.72);z-index:100000;display:none;align-items:flex-end;justify-content:center}
-    .tx-ov.on{display:flex}
-    .tx-sheet{background-color:#FAF8F4;width:100%;max-width:620px;max-height:92vh;border-radius:22px 22px 0 0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 18px calc(24px + env(safe-area-inset-bottom));animation:txUp .3s cubic-bezier(.16,1,.3,1)}
-    @keyframes txUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-    .tx-grab{width:38px;height:4px;background-color:#C5CBD6;border-radius:99px;margin:0 auto 14px}
-    .tx-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
-    .tx-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;font-weight:500;color:#141B2D;line-height:1.2}
-    .tx-title-jp{font-family:'Hiragino Mincho ProN','Yu Mincho','Noto Serif JP',serif;font-size:15px;color:#3A4866;margin-top:3px}
-    .tx-close{width:40px;height:40px;border-radius:50%;flex-shrink:0;font-size:24px;line-height:1;display:flex;align-items:center;justify-content:center;background-color:#FFFFFF!important;color:#55607A!important;border:1px solid #E2E6EF!important}
-    .tx-card{background-color:#FFFFFF;border-radius:16px;padding:24px 18px;text-align:center;border:1px solid #E2E6EF}
-    .tx-to{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#55607A;margin-bottom:12px}
-    .tx-name{font-family:'Hiragino Mincho ProN','Yu Mincho','Noto Serif JP',serif;font-size:30px;line-height:1.3;color:#000000;font-weight:600;margin-bottom:6px}
-    .tx-name-en{font-size:13px;color:#55607A;margin-bottom:18px}
-    .tx-addr{font-family:'Hiragino Mincho ProN','Yu Mincho','Noto Serif JP',serif;font-size:25px;line-height:1.65;color:#000000;font-weight:600;padding:16px 8px;border-top:2px solid #000000;border-bottom:2px solid #000000;word-break:break-word}
-    .tx-ask{font-family:'Hiragino Mincho ProN','Yu Mincho','Noto Serif JP',serif;font-size:20px;color:#000000;margin-top:18px;line-height:1.5}
-    .tx-ask-en{font-size:12px;color:#55607A;margin-top:5px;font-style:italic}
-    .tx-acts{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
-    .tx-act{flex:1 1 30%;min-height:46px;padding:11px 8px;border-radius:10px;font-size:13px;font-weight:600;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:5px;border:1px solid #D6DCE8!important;background-color:#FFFFFF!important;color:#2A3450!important}
-    .tx-act.pri{background-color:#131e36!important;color:#FFFFFF!important;border-color:#131e36!important}
-    .tx-act.go{background-color:#FFF6E0!important;color:#8A5E12!important;border-color:rgba(176,124,34,.35)!important}
-    .tx-foot{font-size:11.5px;color:#55607A;text-align:center;margin-top:16px;padding-top:12px;border-top:1px solid #E2E6EF;line-height:1.6}
-    .tx-foot em{color:#7A869E}
   </style>
 </head>
 <body style="background-color:#FAF8F4">
@@ -387,7 +362,6 @@
   <section id="tab-statement" class="tab-panel" aria-label="Statement" style="background-color:#FAF8F4"></section>
   <section id="tab-emergency" class="tab-panel" aria-label="Emergency" style="background-color:#FAF8F4"></section>
 </main>
-<div class="tx-ov" id="tx-ov" onclick="if(event.target===this)closeTaxi()"><div class="tx-sheet" role="dialog" aria-modal="true" aria-label="Show the driver"><div class="tx-grab"></div><div class="tx-head"><div><div class="tx-title">Show the driver</div><div class="tx-title-jp">タクシーの運転手にお見せください</div></div><button type="button" class="tx-close" onclick="closeTaxi()" aria-label="Close">&times;</button></div><div id="tx-body"></div><div class="tx-foot">住所は Google マップの日本語表記のとおりです。<br><em>Address as Google Maps shows it in Japanese.</em></div></div></div>
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -398,6 +372,7 @@
    CONFIG — the whole UI renders from this block
    Source: HCI Canvas for Alya ZAHID 2026/11 v2 (Google Sheet)
            CANVAS · Confirmation · Budget Izu · Wish List · Diet
+           WhatsApp “Alya family ’26 Autumn” to 1 Nov · Izu–Fuji proposal v7 · Tokyo & Kyoto budget v2
 ═══════════════════════════════════════════════════════ */
 var CONFIG = {
   version: 'v4',
@@ -445,7 +420,7 @@ var CONFIG = {
 
 /* Hotels · mapsLink: paste verbatim maps.app.goo.gl links (preferred over q) */
 var HOTELS = {
-  okura:   { name:'The Okura Tokyo', area:'Toranomon · Tokyo', nights:'2 – 4 Nov · 14 – 16 Nov', addr:'2-10-4 Toranomon, Minato City, Tokyo 105-0001', q:'The Okura Tokyo', tel:'+81335820111', mapsLink:null },
+  gate:    { name:'The Gate Hotel Tokyo', area:'Yūrakuchō · Ginza · Tokyo', nights:'2 – 4 Nov · 14 – 16 Nov', addr:'2-2-3 Yurakucho, Chiyoda City, Tokyo 100-0006', q:'The Gate Hotel Tokyo by Hulic', tel:'+81362638233', mapsLink:null },
   izukogen:{ name:'Family villa · Izu-Kōgen', area:'Izu-Kōgen · East Izu', nights:'4 – 5 Nov', addr:null, q:null, tel:null, mapsLink:null, tbc:true },
   westizu: { name:'Bay-facing inn · West Izu', area:'West Izu coast', nights:'5 – 6 Nov', addr:null, q:null, tel:null, mapsLink:null, tbc:true },
   shuzenji:{ name:'Ryokan · Shuzenji', area:'Izu · Shuzenji Onsen', nights:'6 – 7 Nov', addr:null, q:null, tel:null, mapsLink:null, tbc:true },
@@ -465,28 +440,33 @@ var STEPS = 'Comfortable shoes — plenty of steps and uneven paths today.';
 var DAYS = [
 
   /* ── DAY 1 · Mon 2 Nov · Arrival ── */
-  { date:'2026-11-02', dayNum:1, weekday:'Monday, 2 November', city:'Tokyo', wx:'Tokyo', hotel:'okura', people:['sky'], occasion:'Arrival', feature:false,
+  { date:'2026-11-02', dayNum:1, weekday:'Monday, 2 November', city:'Tokyo', wx:'Tokyo', hotel:'gate', people:['sky'], occasion:'Arrival', feature:false,
     headline:'Welcome to Japan',
-    notes:'An easy late-afternoon landing: a private car straight to The Okura, and an evening with nothing to do but settle in. Tomorrow is a national holiday, so the city will be lively.',
+    notes:'A late-afternoon landing from San Diego, a private van into the city and a relaxed soba dinner a short walk from your hotel. Tomorrow is a national holiday, so the city will be lively.',
     stops:[
       { time:'16:45', type:'flight', badge:'Logistics', status:'logistics',
-        title:'Arrive — Tokyo Narita (NRT)', sub:'JL65 · Terminal 2',
+        title:'Arrive — Tokyo Narita (NRT)', sub:'JL65 from San Diego · Terminal 2',
         q:'Narita Airport Terminal 2', addr:'Narita Airport Terminal 2, 1-1 Furugome, Narita, Chiba 282-0004', mapsLink:null,
-        notes:'Allow about an hour for immigration and baggage. Your SKY Limo driver will be waiting just after the customs exit with a Happy Camper sign, and a WhatsApp group with the driver will be live before you land — use it for anything on arrival day. Withdraw yen at the 7-Bank or Japan Post ATMs in arrivals: around ¥50,000–80,000 per adult covers the first days, and cash matters more than usual in Izu and around Fuji.' },
+        notes:'Allow about an hour for immigration and baggage. Once you have your luggage and walk through the arrival gate, your SKY Limousine driver will be waiting with a sign reading “WELCOME — Alya Zahid Family”. Withdraw yen at the 7-Bank or Japan Post ATMs in arrivals: around ¥50,000–80,000 per adult covers the first days, and cash matters more than usual in Izu and around Fuji.' },
       { time:'~18:00', type:'transport', badge:'Confirmed', status:'confirmed',
-        title:'Private transfer to Toranomon', sub:'SKY Limo · Toyota Hiace for five and luggage',
-        q:'The Okura Tokyo', addr:HOTELS.okura.addr, mapsLink:null,
+        title:'Private transfer to Yūrakuchō', sub:'SKY Limousine · Toyota Hiace for five and luggage',
+        q:'The Gate Hotel Tokyo by Hulic', addr:HOTELS.gate.addr, mapsLink:null,
         notes:'Roughly 75–90 minutes into central Tokyo in early-evening traffic. The Hiace has room for everyone and every suitcase.' },
-      { time:'~19:30', type:'hotel', badge:'Check-in', status:'logistics',
-        title:'Check in — The Okura Tokyo', sub:'Toranomon · two nights now, two more at the end',
-        q:'The Okura Tokyo', addr:HOTELS.okura.addr, mapsLink:null,
-        notes:'Rebuilt in 2019 around a faithful recreation of the legendary 1962 lobby — the lantern-lit hall that architects still make pilgrimages to. Large rooms by Tokyo standards, an excellent pool and spa, and a quiet hilltop setting next to the American Embassy. Dinner tonight in the hotel is the easy choice after a long flight.' }
+      { time:'~19:00', type:'hotel', badge:'Check-in', status:'logistics',
+        title:'Check in — The Gate Hotel Tokyo', sub:'Yūrakuchō · two nights now, two more at the end',
+        q:'The Gate Hotel Tokyo by Hulic', addr:HOTELS.gate.addr, mapsLink:null,
+        notes:'A calm, contemporary hotel on the upper floors of a building between Hibiya and Ginza, with a subway entrance right outside. You have two connecting rooms — a twin and a triple — so the family is together, with breakfast included every morning. Ginza, Hibiya Park and the Imperial Palace gardens are all a short walk.' },
+      { time:'19:00', type:'restaurant', badge:'Confirmed', status:'confirmed', featured:true,
+        title:'Ginza Sanada SIX', sub:'Dinner · Soba & tempura · Ginza Six 6F',
+        facts:['Teuchi soba','5 covers','10 min walk'],
+        q:'Ginza Sanada Six', addr:'6F, 6-10-1 Ginza, Chuo City, Tokyo 104-0061', mapsLink:null, taxi:true,
+        notes:'An easy, generous first dinner: hand-cut soba from the Shinshū mountains, served cold with a dipping sauce or hot in dashi, with crisp seasonal tempura and small plates alongside. At the end, ask for sobayu — the cooking water poured into the remaining sauce and drunk as a warm finish. The room is relaxed and family-friendly, and the staff guide you through the menu in English. Tomoko-san has briefed the kitchen: no pork for anyone, no poultry or raw fish for Patrick, and no egg for Alya (tempura batter can contain egg, so they will prepare it separately). If the flight runs late, Tomoko-san will move the time — just message on WhatsApp.' }
     ] },
 
   /* ── DAY 2 · Tue 3 Nov · Culture Day · Iko ── */
-  { date:'2026-11-03', dayNum:2, weekday:'Tuesday, 3 November', city:'Tokyo', wx:'Tokyo', hotel:'okura', people:['iko','sky'], occasion:'Culture Day', feature:true,
+  { date:'2026-11-03', dayNum:2, weekday:'Tuesday, 3 November', city:'Tokyo', wx:'Tokyo', hotel:'gate', people:['iko','sky'], occasion:'Culture Day', feature:true,
     headline:'Tokyo with Iko-san',
-    notes:'Your first full day, with Iko-san and a car at your disposal. 3 November is Bunka no Hi (Culture Day), a national holiday — expect families out in force. Tonight, pack a small bag for six nights in Izu and Fuji; the big suitcases go ahead by Yamato.',
+    notes:'Your first full day, with Iko-san and a car at your disposal. 3 November is Bunka no Hi (Culture Day), a national holiday — expect families out in force. Tonight, pack for six days in Izu and around Mount Fuji.',
     stops:[
       { time:'Day', type:'activity', badge:'Confirmed', status:'confirmed', featured:true,
         title:'A hosted day in Tokyo', sub:WITHIKO + ' · SKY Limo at your disposal',
@@ -496,8 +476,8 @@ var DAYS = [
         title:'Dinner', sub:'Car available for the evening · venue to be confirmed',
         notes:'Details to follow on WhatsApp. Every restaurant will be told in advance: no pork for anyone, and the individual preferences listed in Utilities.' },
       { time:'Night', type:'hotel', badge:'Logistics', status:'logistics',
-        title:'Luggage ahead by Yamato', sub:'Pack light for 4 – 9 November',
-        notes:'Bring the large suitcases to the Okura bell desk by 16:00 and they travel ahead by Yamato takkyubin — Iko-san has arranged it. Keep a small overnight bag each for six nights of ryokan, villas and lakeside stays: warm layers for Fuji, and something you do not mind getting splashed on the boat at Dōgashima.' }
+        title:'Pack for Izu and Mount Fuji', sub:'Six days on the road · luggage looked after',
+        notes:'Tomorrow you set off for six days in Izu and around Mount Fuji. Your luggage travels with you and the car, and Iko-san looks after it throughout. On the morning of 8 November the main suitcases are sent ahead to Capella Kyoto, so the last mountain day is done with an overnight bag each. Pack warm layers for Fuji, where nights fall close to freezing.' }
     ] },
 
   /* ── DAY 3 · Wed 4 Nov · To Izu ── */
@@ -506,13 +486,13 @@ var DAYS = [
     notes:'A limited express down the coast, then a volcano you can walk around and cliffs you can walk over. From today until the 9th, a private vehicle and driver stay with you, and Iko-san is on home ground — she lives in Ito.',
     stops:[
       { time:'~10:15', type:'transport', badge:'Logistics', status:'logistics', taxi:true,
-        title:'To Tokyo Station', sub:'From The Okura · about 15 minutes', noDriver:true,
+        title:'To Tokyo Station', sub:'From The Gate Hotel · about 10 minutes', noDriver:true,
         q:'Tokyo Station', addr:'1-9 Marunouchi, Chiyoda City, Tokyo 100-0005', mapsLink:null,
         notes:'Leave a comfortable margin for the walk through the station to the Saphir platform.' },
       { time:'11:00–12:55', type:'transport', badge:'Logistics', status:'logistics',
-        title:'Saphir Odoriko', sub:'Tokyo → Izu-Kōgen · reserved seats',
+        title:'Saphir Odoriko', sub:'Tokyo → Izu-Kōgen · private Green cabin for the five of you',
         q:'Izu-Kōgen Station', addr:'1183 Yawatano, Itō, Shizuoka 413-0232', mapsLink:null,
-        notes:'The best train in this part of Japan: a premium limited express with panoramic windows and a sea-facing route along Sagami Bay. Sit on the left for the ocean. There is a café car — a good place for the first bento of the trip.' },
+        notes:'The best train in this part of Japan: a premium limited express with panoramic windows and a sea-facing route along Sagami Bay. Every carriage is first class, and you have a private six-person cabin. Lunch can be pre-ordered from the café car or brought aboard.' },
       { time:'13:00', type:'transport', badge:'Logistics', status:'logistics',
         title:'Meet your private vehicle', sub:'Izu-Kōgen Station · driver with you until 9 Nov',
         q:'Izu-Kōgen Station', addr:'1183 Yawatano, Itō, Shizuoka 413-0232', mapsLink:null,
@@ -524,15 +504,15 @@ var DAYS = [
       { time:'Optional', type:'activity', badge:'Optional', status:'pending',
         title:'Izu Shaboten Zoo', sub:'Across the road from the chairlift · open until 17:00',
         q:'Izu Shaboten Zoo', addr:'1317-13 Futo, Itō, Shizuoka 413-0231', mapsLink:null,
-        notes:'Not a conventional zoo: lemurs, peacocks and capybaras wander free, and you can feed red pandas and otters by hand for a few hundred yen. Made for Laila and Ghada. The capybaras’ famous hot-spring bath is a winter tradition, so in early November you may be just early for it.' },
+        notes:'Not a conventional zoo: lemurs, peacocks and capybaras wander free, and you can feed red pandas and otters by hand for a few hundred yen. Made for Laila and Ghada. The capybaras’ famous afternoon hot-spring baths begin in November.' },
       { time:'Late pm', type:'activity', badge:'Planned', status:'pending',
         title:'Jōgasaki coast', sub:'Kadowaki suspension bridge · lava cliffs',
         q:'Kadowaki Suspension Bridge', addr:'842-65 Futo, Itō, Shizuoka 413-0231', mapsLink:null,
         notes:'The coastline here was made by Ōmuro’s lava flows 4,000 years ago — black, jagged cliffs with the Pacific crashing 23 metres below a swaying footbridge. Gorgeous in late-afternoon light. The cliff paths are uneven, so hold small hands.',
         alert:STEPS },
       { time:'Eve', type:'hotel', badge:'To be confirmed', status:'pending',
-        title:'Check in — family villa, Izu-Kōgen', sub:'Property to be confirmed',
-        notes:'Izu-Kōgen is a wooded plateau of villas and small museums above the sea. Details to follow.' }
+        title:'Check in — family suite, Izu-Kōgen', sub:'Dinner and breakfast included',
+        notes:'Izu-Kōgen is a wooded plateau of villas and small museums above the sea. Onsen first, an early dinner at the hotel, and nothing else asked of anyone. Under forty minutes of driving all day.' }
     ] },
 
   /* ── DAY 4 · Thu 5 Nov · Kawazu · Matsuzaki ── */
@@ -544,14 +524,18 @@ var DAYS = [
         title:'Kawazu Nanadaru', sub:'The Seven Waterfalls walk · about an hour',
         facts:['Gentle forest trail','Seven falls','Stamp rally for kids'],
         q:'Kawazu Seven Waterfalls', addr:'Nashimoto, Kawazu, Kamo District, Shizuoka 413-0501', mapsLink:null,
-        notes:'A riverside path down a forested gorge past seven waterfalls of hexagonal basalt, each with its own name and character, from the thundering Ōdaru to little Kamadaru. This is the setting of Kawabata’s The Izu Dancer, and bronze statues of the story’s characters appear along the way. Pick up a stamp card at the start; collecting all seven gives the younger ones a mission.',
+        notes:'A riverside path down a forested gorge past seven waterfalls of hexagonal basalt, each with its own name and character, from the thundering Ōdaru to little Kamadaru. This is the setting of Kawabata’s The Izu Dancer, and bronze statues of the story’s characters appear along the way. Pick up a stamp card at the start; collecting all seven gives the younger ones a mission. A shorter 20-minute loop reaches the two finest falls from the road, if Laila has had enough of steps.',
         alert:STEPS },
       { time:'Late am', type:'activity', badge:'Planned', status:'pending',
-        title:'Onsen at Nanadaru', sub:'Open-air bath beside the falls · details to be confirmed',
-        notes:'A soak in a riverside hot spring with a waterfall in view. Some baths here are mixed and require swimwear — Iko-san will choose the right option for the family and can reserve a private bath.' },
+        title:'Lunch, then an onsen at Nanadaru', sub:'Wasabi soba in the valley · riverside bath',
+        notes:'This is Japan’s wasabi heartland: soba with freshly grated stem wasabi is the thing to order (lunch is paid on the day). Then a soak in a riverside hot spring with a waterfall in view, with private or family bathing reserved where possible — some baths here are mixed and need swimwear, so Iko-san will choose the right option.' },
+      { time:'Optional', type:'activity', badge:'Optional', status:'pending',
+        title:'Hagachizaki Monkey Bay', sub:'Wild macaques on the beach · routing on the day',
+        q:'Hagachizaki Monkey Bay', addr:'2622-1 Ihama, Minamiizu, Kamo District, Shizuoka 415-0531', mapsLink:null,
+        notes:'A colony of wild Japanese macaques lives on a pebble beach on the southern tip of the peninsula — you walk among them, and can feed them from a little barred hut. One for Laila and Ghada, if the day allows. Leave dangling keyrings and soft toys in the car: the monkeys find them irresistible.' },
       { time:'Afternoon', type:'transport', badge:'Logistics', status:'logistics',
         title:'Over the mountains to the west coast', sub:'Private vehicle',
-        notes:'A scenic drive across the spine of the peninsula on the Amagi road.' },
+        notes:'A mountain road over the spine of the peninsula to a completely different coast. The roads wind continuously: anyone prone to motion sickness should sit forward and take something before leaving, and the driver will stop whenever it helps.' },
       { time:'Afternoon', type:'activity', badge:'Planned', status:'pending',
         title:'Matsuzaki old town', sub:'Namako-kabe streets · Nakase residence',
         q:'Nakase Residence Matsuzaki', addr:'315-1 Matsuzaki, Kamo District, Shizuoka 410-3611', mapsLink:null,
@@ -560,8 +544,8 @@ var DAYS = [
         title:'Sunset on the west coast', sub:'Weather permitting',
         notes:'The sun drops into Suruga Bay early in November. On a clear evening Mount Fuji appears across the water — one of the classic views of Izu.' },
       { time:'Eve', type:'hotel', badge:'To be confirmed', status:'pending',
-        title:'Check in — bay-facing inn, West Izu', sub:'Property to be confirmed',
-        notes:'Details to follow.' }
+        title:'Check in — bay-facing hotel, West Izu', sub:'Dinner and breakfast included',
+        notes:'This shore looks due west across Suruga Bay to Mount Fuji — the sunset is the reason to be here. Dinner at the hotel, with the local catch.' }
     ] },
 
   /* ── DAY 5 · Fri 6 Nov · Dōgashima · bonsai · Shuzenji ── */
@@ -573,11 +557,11 @@ var DAYS = [
         title:'Dōgashima — Blue Cave cruise', sub:'Boat into Tenso-dō cave · then the cliff walk',
         facts:['20-minute boat','Weather-dependent','Cliff-top path'],
         q:'Dogashima Marine', addr:'2060 Nishina, Nishiizu, Kamo District, Shizuoka 410-3514', mapsLink:null,
-        notes:'Small boats nose between sea stacks and into Tenso-dō, a cave whose collapsed roof lets a shaft of light fall into turquoise water — Japan’s answer to Capri. Afterwards, the path along the top of the cliffs looks down through that same hole from above. Boats leave every 20 minutes or so, but do not run in a heavy swell; Iko-san will check conditions in the morning.',
+        notes:'Small boats nose between sea stacks and into Tenso-dō, a cave whose collapsed roof lets a shaft of light fall into turquoise water — Japan’s answer to Capri. Afterwards, the cliff-top path looks down through that same hole, and out to the Sanshirō islands, joined to the shore by a sand bar at low tide. Seafood lunch at the harbour follows. Boats leave every 20 minutes or so, but do not run in a heavy swell; Iko-san will check conditions in the morning.',
         alert:'The boat can rock — sit at the back if anyone is prone to seasickness.' },
       { time:'Midday', type:'activity', badge:'Planned', status:'pending',
         title:'Private visit to a bonsai master', sub:'Arranged by Iko-san · details to follow',
-        notes:'A rare chance to see bonsai as a living craft rather than a museum piece — trees shaped over decades, sometimes generations, and the tools and patience behind them. Ask questions; masters generally love an interested teenager.' },
+        notes:'An hour or two with a master in his own garden: how a tree is read before it is cut, why one branch goes and another stays — and the family’s own hands on the wire. Arranged privately, with Iko-san interpreting.' },
       { time:'Afternoon', type:'activity', badge:'Planned', status:'pending',
         title:'Toi', sub:'Harbour town on the north-west coast',
         q:'Toi Port', addr:'2920 Toi, Izu, Shizuoka 410-3302', mapsLink:null,
@@ -587,8 +571,8 @@ var DAYS = [
         q:'Shuzenji Temple', addr:'964 Shuzenji, Izu, Shizuoka 410-2416', mapsLink:null,
         notes:'Izu’s “little Kyoto”: a temple founded by Kūkai in 807, a river crossed by vermilion bridges, a short bamboo-lined path and a scattering of footbaths. The maples around the temple begin to turn in early November. Small enough to explore on foot in an hour, and lovely as the lanterns come on.' },
       { time:'Eve', type:'hotel', badge:'To be confirmed', status:'pending',
-        title:'Check in — ryokan, Shuzenji', sub:'Property to be confirmed',
-        notes:'A night in a traditional inn — yukata, futon and a hot-spring bath. Dinner in yukata is entirely normal.' }
+        title:'Check in — ryokan, Shuzenji', sub:'Kaiseki dinner and breakfast included',
+        notes:'A night in a traditional inn: tatami rooms, yukata, futon laid out while you dine, and a hot-spring bath. Dinner is a full kaiseki served course by course — planned weeks ahead, with Patrick’s courses re-planned with the kitchen in advance and no pork anywhere. Dinner in yukata is entirely normal.' }
     ] },
 
   /* ── DAY 6 · Sat 7 Nov · Numazu · Fuji ── */
@@ -607,15 +591,15 @@ var DAYS = [
         title:'Chūreitō Pagoda', sub:'Arakurayama Sengen Park · about 400 steps',
         facts:['The classic Fuji view','Fuji-dependent'],
         q:'Chureito Pagoda', addr:'2-4-1 Asama, Fujiyoshida, Yamanashi 403-0011', mapsLink:null,
-        notes:'The five-storey red pagoda with Fuji rising behind it is perhaps the most photographed view in Japan, and in early November the maples on the hillside add a third colour. The climb is a steady staircase; the payoff is immediate.',
+        notes:'The five-storey red pagoda with Fuji rising behind it is perhaps the most photographed view in Japan, and in early November the maples on the hillside add a third colour. The 398 steps, taken slowly, are well within reach of an eight-year-old; there is also a lower viewpoint by car for anyone who would rather wait.',
         alert:STEPS },
       { time:'Late pm', type:'activity', badge:'Planned', status:'pending',
         title:'Mt. Fuji Panoramic Ropeway', sub:'Lake Kawaguchi · open until 17:00',
         q:'Mt. Fuji Panoramic Ropeway', addr:'1163-1 Azagawa, Fujikawaguchiko, Yamanashi 401-0303', mapsLink:null,
         notes:'A three-minute gondola to an observation deck over Lake Kawaguchi, with Fuji full-frame across the water. Lines can reach an hour at weekends, so Iko-san may swap the order of today’s stops if the mountain is out early.' },
       { time:'Eve', type:'hotel', badge:'To be confirmed', status:'pending',
-        title:'Check in — Yamanakako', sub:'Two nights · property to be confirmed',
-        notes:'Lake Yamanaka is the highest and quietest of the five lakes. Nights here are cold in November — close to freezing.' }
+        title:'Check in — Yamanakako', sub:'Two nights · dinner and breakfast included',
+        notes:'Lake Yamanaka is the highest and quietest of the five lakes, near 1,000 m. Two dinners at the hotel, warming and regional, and no packing between the two Fuji days. Nights here fall close to freezing.' }
     ] },
 
   /* ── DAY 7 · Sun 8 Nov · Oshino · canoe ── */
@@ -623,23 +607,32 @@ var DAYS = [
     headline:'Spring water and a canoe beneath Fuji',
     notes:'An early start for the springs before the tour buses, a morning on the lake, and a free afternoon — the most relaxed day of the trip. Tomorrow starts at 06:45, so an early night helps.',
     stops:[
+      { time:'Dawn', type:'activity', badge:'Optional', status:'pending',
+        title:'Mount Fuji at first light', sub:'A few minutes from the hotel · for early risers',
+        notes:'The clearest and quietest hour of the day. Entirely optional.' },
       { time:'Early', type:'activity', badge:'Planned', status:'pending',
         title:'Oshino Hakkai', sub:'Eight spring-fed ponds · go before 09:00',
         q:'Oshino Hakkai', addr:'Shibokusa, Oshino, Minamitsuru District, Yamanashi 401-0511', mapsLink:null,
         notes:'Snowmelt from Fuji takes decades to filter through the volcanic rock before it surfaces here in ponds so clear the carp seem to float in air. Thatched farmhouses, a water wheel and grilled mochi from the stalls. By mid-morning it fills with day-trippers, so early is everything.' },
       { time:'Morning', type:'activity', badge:'Planned', status:'pending', featured:true,
-        title:'Private canoe on Lake Yamanaka', sub:'With a guide · operator to be confirmed',
+        title:'Private canoe on Lake Yamanaka', sub:'Guided · for the family alone · weather-dependent',
         facts:['Private','Guided','All ages'],
-        notes:'Stable inflatable canoes, a patient guide and Fuji filling the horizon — on a still morning the mountain is reflected in the lake. Swans are resident. Dress warmly: it is cold on the water in November, and gloves are a good idea.' },
+        notes:'Stable open canoes, life jackets, full instruction and a guide for the family alone — Laila sits between the paddlers and nobody needs experience. Fuji fills the horizon — on a still morning the mountain is reflected in the lake. Swans are resident. Dress warmly: it is cold on the water in November, and gloves are a good idea.' },
+      { time:'Morning', type:'hotel', badge:'Logistics', status:'logistics',
+        title:'Main luggage sent ahead to Kyoto', sub:'Delivered to Capella Kyoto on the 9th',
+        notes:'Tomorrow involves a mountain railway and a shinkansen, so the big suitcases leave this morning. Keep an overnight bag each, with medication, passports and valuables in hand luggage.' },
       { time:'Afternoon', type:'activity', badge:'At leisure', status:'pending',
         title:'Free afternoon', sub:'Rest, or ask Iko-san for ideas',
-        notes:'Hana no Miyako Park has a playground and Fuji views; the yellow amphibious Kaba bus drives straight into the lake, which young children find hilarious; and Fuji-Q Highland’s roller coasters are some of the most extreme in the world, if Faisal and Ghada are feeling brave.' }
+        notes:'Hana no Miyako Park has a playground and Fuji views; the yellow amphibious Kaba bus drives straight into the lake, which young children find hilarious; and Fuji-Q Highland’s roller coasters are some of the most extreme in the world, if Faisal and Ghada are feeling brave. On a clear evening, Iko-san will know where to stand for “Diamond Fuji”, when the setting sun touches the summit.' },
+      { time:'Eve', type:'restaurant', badge:'Included', status:'confirmed',
+        title:'Dinner at the hotel', sub:'Second night at Yamanakako',
+        notes:'Kept unhurried, so you can follow a clear sunset first if one arrives.' }
     ] },
 
   /* ── DAY 8 · Mon 9 Nov · Ikawa Line · to Kyoto ── */
   { date:'2026-11-09', dayNum:8, weekday:'Monday, 9 November', city:'Kyoto', wx:'Kyoto', hotel:'capella', people:['iko','izu'], occasion:'Travel day', feature:true,
     headline:'A mountain railway, then Kyoto',
-    notes:'A long but memorable day: an early drive into the Southern Alps, Japan’s only rack railway to a station on a lake, then the shinkansen west to Kyoto. Iko-san travels with you to Kyoto.',
+    notes:'A long but memorable day: an early drive into the Southern Alps, Japan’s only rack railway to a station on a lake, then the shinkansen west to Kyoto. Iko-san sees you onto the train at Shizuoka, and your luggage is already at the hotel.',
     stops:[
       { time:'06:45', type:'transport', badge:'Logistics', status:'logistics',
         title:'Depart Yamanakako', sub:'Private vehicle to Senzu',
@@ -653,7 +646,7 @@ var DAYS = [
       { time:'11:12', type:'activity', badge:'Planned', status:'pending',
         title:'Okuōikojō — the Laketop station', sub:'About an hour to explore',
         q:'Okuōikojō Station', addr:'Inuma, Kawanehon, Haibara District, Shizuoka 428-0402', mapsLink:null,
-        notes:'Walk across the rainbow bridge alongside the tracks, then climb to the viewpoint for the postcard shot of the train crossing the lake. There are steep steps to the lookout.',
+        notes:'Walk across the rainbow bridge alongside the tracks, then climb to the viewpoint for the postcard shot of the train crossing the lake, and eat a pre-ordered bentō above the water. There are steep steps to the lookout. If the line is suspended for weather, the same view is reached by road and you arrive in Kyoto earlier.',
         alert:STEPS },
       { time:'12:18', type:'transport', badge:'Logistics', status:'logistics',
         title:'Train back to Senzu', sub:'Then by car to Shizuoka',
@@ -662,7 +655,7 @@ var DAYS = [
       { time:'15:30–17:30', type:'transport', badge:'Logistics', status:'logistics',
         title:'Shinkansen Shizuoka → Kyoto', sub:'Tokaido Shinkansen', noDriver:true,
         q:'Kyoto Station', addr:'Higashishiokoji Kamadonocho, Shimogyo Ward, Kyoto 600-8216', mapsLink:null,
-        notes:'Two hours west. Your large suitcases should be waiting for you at the hotel.' },
+        notes:'Two hours west in reserved seats. Your suitcases are waiting at the hotel.' },
       { time:'~18:00', type:'hotel', badge:'Check-in', status:'logistics', taxi:true, noDriver:true,
         title:'Check in — Capella Kyoto', sub:'Miyagawa-cho · five nights',
         q:'Capella Kyoto', addr:HOTELS.capella.addr, mapsLink:null,
@@ -714,38 +707,38 @@ var DAYS = [
   /* ── DAY 12 · Fri 13 Nov · Kyoto free ── */
   { date:'2026-11-13', dayNum:12, weekday:'Friday, 13 November', city:'Kyoto', wx:'Kyoto', hotel:'capella', people:[], occasion:'At leisure', feature:false,
     headline:'A day of your own in Kyoto',
-    notes:'Nothing planned. Gion and Miyagawa-cho are on your doorstep, and Nishiki Market is a 15-minute walk.',
+    notes:'Nothing planned and no car today — everything nearby is walkable, and GO Taxi is easy for anything further. Essam and his family arrive in Kyoto today, staying close to Capella, so it is a good day to meet up.',
     stops:[
       { time:'Day', type:'activity', badge:'At leisure', status:'pending', taxi:true,
-        title:'Kyoto at leisure', sub:'Car service to be confirmed',
+        title:'Kyoto at leisure', sub:'On foot or by taxi',
         q:'Kenninji Temple', addr:'584 Komatsu-cho, Higashiyama Ward, Kyoto 605-0811', mapsLink:null,
         notes:'Start next door at Kennin-ji, whose ceiling of twin dragons is one of Kyoto’s great sights, then wander along the willow-lined Shirakawa canal in Gion. For the children, the Samurai & Ninja Museum downtown ends with shuriken throwing and a chance to try on armour, and the Zuikou studio near Kiyomizu runs beginner pottery on the wheel — pieces are fired and shipped home (cash only). Nishiki Market is the place to graze — ask before eating anything skewered, as some stalls use pork. See Discover for more ideas.' }
     ] },
 
   /* ── DAY 13 · Sat 14 Nov · To Tokyo ── */
-  { date:'2026-11-14', dayNum:13, weekday:'Saturday, 14 November', city:'Tokyo', wx:'Tokyo', hotel:'okura', people:[], occasion:'Travel day', feature:false,
+  { date:'2026-11-14', dayNum:13, weekday:'Saturday, 14 November', city:'Tokyo', wx:'Tokyo', hotel:'gate', people:[], occasion:'Travel day', feature:false,
     headline:'Back to Tokyo',
-    notes:'East again for your final two nights at The Okura.',
+    notes:'East again for your final two nights back at The Gate Hotel.',
     stops:[
       { time:'', type:'transport', badge:'To be confirmed', status:'pending', taxi:true,
         title:'Kyoto → Tokyo', sub:'Tokaido Shinkansen · timing to be confirmed',
         q:'Kyoto Station', addr:'Higashishiokoji Kamadonocho, Shimogyo Ward, Kyoto 600-8216', mapsLink:null,
-        notes:'About 2 h 15 min by Nozomi. Sit on the right-hand side (seats D and E) for the best chance of Mount Fuji. Luggage can go ahead by Yamato the day before.' },
+        notes:'About 2 h 15 min by Nozomi; tickets are on your own account, and Capella’s concierge can book them, arrange a car to Kyoto Station and help you through to the platform. Sit on the right-hand side (seats D and E) for the best chance of Mount Fuji. Luggage can go ahead by Yamato the day before.' },
       { time:'Afternoon', type:'hotel', badge:'Check-in', status:'logistics', taxi:true,
-        title:'Check in — The Okura Tokyo', sub:'Toranomon · two nights',
-        q:'The Okura Tokyo', addr:HOTELS.okura.addr, mapsLink:null,
-        notes:'Welcome back. The Okura Museum of Art next door holds one of the oldest private collections in Japan (closed Mondays).' }
+        title:'Check in — The Gate Hotel Tokyo', sub:'Yūrakuchō · two nights',
+        q:'The Gate Hotel Tokyo by Hulic', addr:HOTELS.gate.addr, mapsLink:null,
+        notes:'Welcome back. No car on the last days — Tokyo’s subway starts at the hotel door, and taxis and GO Taxi are everywhere.' }
     ] },
 
   /* ── DAY 14 · Sun 15 Nov · Tokyo free ── */
-  { date:'2026-11-15', dayNum:14, weekday:'Sunday, 15 November', city:'Tokyo', wx:'Tokyo', hotel:'okura', people:[], occasion:'Last full day', feature:false,
+  { date:'2026-11-15', dayNum:14, weekday:'Sunday, 15 November', city:'Tokyo', wx:'Tokyo', hotel:'gate', people:[], occasion:'Last full day', feature:false,
     headline:'A last day in Tokyo',
     notes:'Free for last shopping, a game of pickleball or a final round of Pokémon hunting.',
     stops:[
       { time:'Day', type:'activity', badge:'At leisure', status:'pending', taxi:true,
         title:'Tokyo at leisure', sub:'Ideas below and in Discover',
         q:'teamLab Borderless', addr:'Azabudai Hills Garden Plaza B, B1, 5-9-9 Toranomon, Minato City, Tokyo 106-0041', mapsLink:null,
-        notes:'teamLab Borderless at Azabudai Hills is ten minutes’ walk from the hotel — a maze of rooms of moving light where the children can draw a sea creature and watch it swim off across the walls (book a time slot ahead). Pickleball One in Uchisaiwaicho is the closest court, if Ghada wants a game; Tokyo Tower is a short walk the other way. With a whole day, the Cup Noodles Museum in Yokohama — about 40 minutes by car — lets everyone design and seal their own cup noodle (book the factory slot ahead).' }
+        notes:'teamLab Borderless at Azabudai Hills, a short taxi ride away, is a maze of rooms of moving light where the children can draw a sea creature and watch it swim off across the walls (book a time slot ahead). Pickleball One in Uchisaiwaicho is a five-minute walk from the hotel, if Ghada wants a game, and Hibiya Park is just across the road. With a whole day, the Cup Noodles Museum in Yokohama — about 40 minutes by car — lets everyone design and seal their own cup noodle (book the factory slot ahead).' }
     ] },
 
   /* ── DAY 15 · Mon 16 Nov · Departure ── */
@@ -773,18 +766,19 @@ var DISCOVER = {
       ['Pokémon Center Mega Tokyo','Pokemon Center Mega Tokyo','Ikebukuro · the biggest one, with Pikachu Sweets café'],
       ['Kiddy Land','Kiddy Land Harajuku','Omotesando · five floors of character toys'],
       ['Ueno Zoo','Ueno Zoo','Giant pandas · closed Mondays'],
-      ['teamLab Borderless','teamLab Borderless','Azabudai Hills · 10 min walk · closed Tuesdays · book ahead'],
+      ['teamLab Borderless','teamLab Borderless','Azabudai Hills · closed Tuesdays · book ahead'],
       ['teamLab Planets','teamLab Planets Toyosu','Toyosu · wade barefoot through water and light · book ahead'],
       ['Cup Noodles Museum','Cup Noodles Museum Yokohama','Yokohama · make your own cup noodle · closed Tuesdays']
     ]},
     { cat:'Pickleball', items:[
-      ['Pickleball One Ginza Shimbashi','Pickleball One Ginza Shimbashi','Closest to the hotel · indoor courts'],
+      ['Pickleball One Ginza Shimbashi','Pickleball One Ginza Shimbashi','Five minutes’ walk from the hotel · indoor courts'],
       ['PICKLR Tokyo Toyosu','PICKLR Tokyo Toyosu','Large indoor facility · open from 07:00'],
       ['Pacific Pickle Club','Pacific Pickle Club','Ariake Urban Sports Park · outdoor courts']
     ]},
-    { cat:'Near The Okura', items:[
-      ['Okura Museum of Art','Okura Museum of Art','Next door to the hotel · closed Mondays'],
-      ['Tokyo Tower','Tokyo Tower','A short walk · best at dusk'],
+    { cat:'Near The Gate Hotel', items:[
+      ['Hibiya Park','Hibiya Park','Across the road · playgrounds and autumn leaves'],
+      ['Ginza Sanada SIX','Ginza Sanada Six','Soba and tempura · Ginza Six 6F'],
+      ['Tokyo Tower','Tokyo Tower','Short taxi ride · best at dusk'],
       ['Hamarikyu Gardens','Hamarikyu Gardens','Teahouse on the pond · matcha and wagashi']
     ]}
   ],
@@ -832,7 +826,10 @@ var DISCOVER = {
    maps.app.goo.gl mapsLink still takes priority.
 ═══════════════════════════════════════════════════════ */
 var PLACE_IDS = {
-  'The Okura Tokyo':'ChIJuecmcH2LGGARgmOaAPaK9zA',
+  'The Gate Hotel Tokyo by Hulic':'ChIJQVNRJpuLGGARn0Qn2NmW3k8',
+  'Ginza Sanada Six':'ChIJNwI-QeaLGGARXpzDD93yagg',
+  'Hagachizaki Monkey Bay':'ChIJuViA88X4GWARvDxGl8sEDfY',
+  'Hibiya Park':'ChIJx6xXOPKLGGARtPr6qZZ2nHA',
   'Capella Kyoto':'ChIJo2d4PwAJAWARatMDAEMOnqs',
   'Narita Airport Terminal 2':'ChIJ4yM7gZ3zImARsGTFuKlNSQc',
   'Tokyo Station':'ChIJC3Cf2PuLGGAROO00ukl8JwA',
@@ -863,7 +860,6 @@ var PLACE_IDS = {
   'Pickleball One Ginza Shimbashi':'ChIJoXi0ySOLGGARMyynvVGOejk',
   'PICKLR Tokyo Toyosu':'ChIJU8yOdACJGGAREN8XXXT6RPs',
   'Pacific Pickle Club':'ChIJFxJnqL-JGGARNQV6RE1hG6E',
-  'Okura Museum of Art':'ChIJC5-nF5CLGGAR9M3JUrPsBj8',
   'Tokyo Tower':'ChIJCewJkL2LGGAR3Qmk0vCTGkg',
   'Hamarikyu Gardens':'ChIJwfegutyLGGARGjiY-L2eSps',
   'Izu Teddy Bear Museum':'ChIJBel2jo_cGWARnJ0D8NNtY_M',
@@ -968,91 +964,6 @@ function loadWeather(){
 
 /* ══════════════ RENDER: STOP ══════════════ */
 var ICONS={flight:'✈️',transport:'🚄',restaurant:'🍽️',activity:'🧭',hotel:'🏨'};
-/* ═══ JAPANESE PLACE DIRECTORY · taxi card ═══
-   addr = address in Japanese as Google Maps shows it to a Japanese user; each entry
-   cross-checked against the Google Places result (postcode + romanised address).
-   TAXI_KEY maps a stop's q string to its entry; a stop can also carry ja:'key' directly. */
-var JA_DIR = {
-  narita2:{ name:'成田国際空港 第2ターミナル', en:'Narita Airport Terminal 2', addr:'〒282-0004 千葉県成田市古込字古込1-1', tel:'' },
-  okura:{ name:'The Okura Tokyo（オークラ東京）', en:'The Okura Tokyo', addr:'〒105-0001 東京都港区虎ノ門2-10-4', tel:'+81335820111' },
-  tokyostn:{ name:'東京駅', en:'Tokyo Station', addr:'〒100-0005 東京都千代田区丸の内1-9-1', tel:'' },
-  izukogen:{ name:'伊豆高原駅', en:'Izu-Kōgen Station', addr:'〒413-0232 静岡県伊東市八幡野1183', tel:'' },
-  omuro:{ name:'大室山リフト', en:'Mt. Ōmuro Chairlift', addr:'〒413-0231 静岡県伊東市池672-2', tel:'' },
-  shaboten:{ name:'伊豆シャボテン動物公園', en:'Izu Shaboten Zoo', addr:'〒413-0231 静岡県伊東市富戸1317-13', tel:'' },
-  kadowaki:{ name:'城ヶ崎海岸 門脇吊橋', en:'Kadowaki Suspension Bridge', addr:'〒413-0231 静岡県伊東市富戸842-65', tel:'' },
-  nanadaru:{ name:'河津七滝', en:'Kawazu Seven Waterfalls', addr:'〒413-0501 静岡県賀茂郡河津町梨本', tel:'' },
-  nakase:{ name:'中瀬邸', en:'Nakase Residence', addr:'〒410-3611 静岡県賀茂郡松崎町松崎315-1', tel:'' },
-  dogashima:{ name:'堂ヶ島マリン（洞くつめぐり遊覧船）', en:'Dōgashima Marine', addr:'〒410-3514 静岡県賀茂郡西伊豆町仁科2060', tel:'' },
-  toi:{ name:'土肥港', en:'Toi Port', addr:'〒410-3302 静岡県伊豆市土肥2920', tel:'' },
-  shuzenji:{ name:'修禅寺', en:'Shuzenji Temple', addr:'〒410-2416 静岡県伊豆市修善寺964', tel:'' },
-  numazu:{ name:'沼津港深海水族館', en:'Numazu Deep Sea Aquarium', addr:'〒410-0845 静岡県沼津市千本港町83', tel:'' },
-  chureito:{ name:'新倉山浅間公園 忠霊塔', en:'Chūreitō Pagoda', addr:'〒403-0011 山梨県富士吉田市浅間2-4-1', tel:'' },
-  kachikachi:{ name:'〜河口湖〜富士山パノラマロープウェイ', en:'Mt. Fuji Panoramic Ropeway', addr:'〒401-0303 山梨県南都留郡富士河口湖町浅川1163-1', tel:'' },
-  oshino:{ name:'忍野八海', en:'Oshino Hakkai', addr:'〒401-0511 山梨県南都留郡忍野村忍草', tel:'' },
-  senzu:{ name:'千頭駅（大井川鐵道）', en:'Senzu Station', addr:'〒428-0411 静岡県榛原郡川根本町千頭1216-5', tel:'' },
-  okuoi:{ name:'奥大井湖上駅', en:'Okuōikojō Station', addr:'〒428-0402 静岡県榛原郡川根本町犬間', tel:'' },
-  shizuokastn:{ name:'静岡駅', en:'Shizuoka Station', addr:'〒420-0851 静岡県静岡市葵区黒金町', tel:'' },
-  kyotostn:{ name:'京都駅', en:'Kyoto Station', addr:'〒600-8216 京都府京都市下京区東塩小路釜殿町', tel:'' },
-  capella:{ name:'カペラ京都', en:'Capella Kyoto', addr:'〒605-0811 京都府京都市東山区小松町130', tel:'+81755418877' },
-  kenninji:{ name:'建仁寺', en:'Kennin-ji', addr:'〒605-0811 京都府京都市東山区小松町584', tel:'' },
-  teamlab:{ name:'チームラボボーダレス（麻布台ヒルズ）', en:'teamLab Borderless', addr:'〒106-0041 東京都港区虎ノ門5-9-9 麻布台ヒルズ ガーデンプラザB B1', tel:'' }
-};
-var TAXI_KEY = {
-  'Narita Airport Terminal 2':'narita2',
-  'The Okura Tokyo':'okura',
-  'Tokyo Station':'tokyostn',
-  'Izu-Kōgen Station':'izukogen',
-  'Mount Omuro Climbing Chairlifts':'omuro',
-  'Izu Shaboten Zoo':'shaboten',
-  'Kadowaki Suspension Bridge':'kadowaki',
-  'Kawazu Seven Waterfalls':'nanadaru',
-  'Nakase Residence Matsuzaki':'nakase',
-  'Dogashima Marine':'dogashima',
-  'Toi Port':'toi',
-  'Shuzenji Temple':'shuzenji',
-  'Numazu Deep Sea Aquarium':'numazu',
-  'Chureito Pagoda':'chureito',
-  'Mt. Fuji Panoramic Ropeway':'kachikachi',
-  'Oshino Hakkai':'oshino',
-  'Senzu Station':'senzu',
-  'Okuōikojō Station':'okuoi',
-  'Shizuoka Station':'shizuokastn',
-  'Kyoto Station':'kyotostn',
-  'Capella Kyoto':'capella',
-  'Kenninji Temple':'kenninji',
-  'teamLab Borderless':'teamlab'
-};
-function taxiKey(s){
-  if(!s||s.type==='flight'||s.status==='suggestion'||s.badgeType==='suggestion')return null;
-  var k=s.ja||TAXI_KEY[s.q];return(k&&JA_DIR[k])?k:null;
-}
-function taxiBtn(k,di,si){
-  return '<button type="button" class="map-btn tx-btn" onclick="showTaxi(\''+k+'\','+di+','+si+')" aria-label="Show the address in Japanese to a taxi driver">🚕 Taxi</button>';
-}
-window.showTaxi=function(k,di,si){
-  var j=JA_DIR[k];if(!j)return;
-  var s=null;try{s=DAYS[di].stops[si];}catch(e){}
-  var maps=s?gm(s.q,s.mapsLink):'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(j.addr);
-  var extra='';try{extra=(function(s,di){var d=dayDriver(DAYS[di]);if(d&&s&&!s.noDriver)return '<a href="'+contactHref(d)+'" target="_blank" rel="noopener" class="tx-act">'+(d.icon||'🚐')+' Your driver</a>';return '<a href="'+CONFIG.goTaxi+'" target="_blank" rel="noopener" class="tx-act go">🚕 GO Taxi</a>';})(s,di);}catch(e){}
-  document.getElementById('tx-body').innerHTML=''
-    +'<div class="tx-card">'
-    +'<div class="tx-to">行き先 · DESTINATION</div>'
-    +'<div class="tx-name">'+esc(j.name)+'</div>'
-    +'<div class="tx-name-en">'+esc(j.en)+'</div>'
-    +'<div class="tx-addr">'+esc(j.addr)+'</div>'
-    +'<div class="tx-ask">ここまでお願いします。</div>'
-    +'<div class="tx-ask-en">Please take me here.</div>'
-    +'</div>'
-    +'<div class="tx-acts">'
-    +'<a href="'+maps+'" target="_blank" rel="noopener" class="tx-act pri">📍 Maps</a>'
-    +(j.tel?'<a href="tel:'+j.tel+'" class="tx-act">📞 Call venue</a>':'')
-    +extra
-    +'</div>';
-  document.getElementById('tx-ov').classList.add('on');
-};
-window.closeTaxi=function(){var o=document.getElementById('tx-ov');if(o)o.classList.remove('on');};
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeTaxi();});
-
 function renderStop(stop,di,si,drv){
   var hidden=stop.status==='suggestion';
   var pending=stop.status==='pending'||hidden;
@@ -1076,11 +987,10 @@ function renderStop(stop,di,si,drv){
   if(stop.alert)h+='<div class="stop-alert">⚠ '+esc(stop.alert)+'</div>';
   if(hasLoc){
     var move=stop.type!=='flight';
-    var tk=move?taxiKey(stop):null;
     h+='<div class="map-actions">'
       +'<a href="'+gm(stop.q,stop.mapsLink)+'" target="_blank" rel="noopener" class="map-btn mp" aria-label="Open '+esc(stop.title)+' in Google Maps">📍 Maps</a>'
       +'<a href="'+(stop.mapsLink&&!stop.q?stop.mapsLink:nav(stop.addr||stop.q,stop.q))+'" target="_blank" rel="noopener" class="map-btn" aria-label="Directions to '+esc(stop.title)+'">🧭 Directions</a>'
-      +(tk?taxiBtn(tk,di,si):move&&drv&&!stop.noDriver?'<a href="'+contactHref(drv)+'" target="_blank" rel="noopener" class="map-btn drv" aria-label="Contact your driver">'+(drv.icon||'🚐')+' Driver</a>'
+      +(move&&drv&&!stop.noDriver?'<a href="'+contactHref(drv)+'" target="_blank" rel="noopener" class="map-btn drv" aria-label="Contact your driver">'+(drv.icon||'🚐')+' Driver</a>'
         :(move&&stop.taxi?'<a href="'+CONFIG.goTaxi+'" target="_blank" rel="noopener" class="map-btn taxi" aria-label="Book a GO taxi">🚕 GO Taxi</a>':''))
       +'<button type="button" class="map-btn" onclick="copyAddr('+di+','+si+')" aria-label="Copy address">⧉ Copy</button>'
       +'</div>';
@@ -1202,7 +1112,7 @@ function renderTravel(){
     h+=travelRow(d.date,drv.display,drv.role+' · '+d.city,'confirmed','With driver',null,'<a class="res-map" href="'+contactHref(drv)+'" target="_blank" rel="noopener" aria-label="Contact driver" style="margin-right:6px">💬</a>');
   });
   h+='</div><div class="util-card"><ul class="info-list">'
-    +'<li><span class="info-emoji">🚕</span><div class="info-text"><strong>Days without a car</strong>On 13–15 November use the GO Taxi app in Kyoto and Tokyo, or ask the concierge to call a car. Set pickup and destination and pay by card.</div></li>'
+    +'<li><span class="info-emoji">🚕</span><div class="info-text"><strong>Days without a car</strong>On 13–15 November there is no car: walk, take the subway (the station is at The Gate Hotel’s door), use the GO Taxi app, or ask the concierge to call a car. Set pickup and destination and pay by card.</div></li>'
     +'</ul><a class="cta-btn" href="'+CONFIG.goTaxi+'" target="_blank" rel="noopener">🚕 Open GO Taxi →</a></div>'
     +'<div class="section-label"><span class="sec-num">4</span>Where you stay</div><div class="res-card">';
   Object.keys(HOTELS).forEach(function(k){
@@ -1212,7 +1122,7 @@ function renderTravel(){
       +((ho.q||ho.mapsLink)?'<a class="res-map" href="'+gm(ho.q,ho.mapsLink)+'" target="_blank" rel="noopener" aria-label="Map for '+esc(ho.name)+'">📍</a>':'')+'</div>';
   });
   h+='</div><div class="section-label"><span class="sec-num">5</span>Luggage</div><div class="util-card"><ul class="info-list">'
-    +'<li><span class="info-emoji">🧳</span><div class="info-text"><strong>Yamato takkyubin</strong>Large suitcases go to The Okura bell desk by 16:00 on 3 November and meet you again later in the trip, so the Izu and Fuji days are done with a small bag each. Iko-san coordinates the details.</div></li>'
+    +'<li><span class="info-emoji">🧳</span><div class="info-text"><strong>Luggage in Izu and Fuji</strong>Your luggage travels with you and the car from 4 November, and Iko-san looks after it. On the morning of 8 November the main suitcases go ahead by Yamato to Capella Kyoto, so the mountain-railway day is done with an overnight bag.</div></li>'
     +'<li><span class="info-emoji">🚄</span><div class="info-text"><strong>Train luggage</strong>Shinkansen seats can take a carry-on; anything larger than 160 cm in total needs a reserved oversized-baggage seat.</div></li>'
     +'</ul></div>';
   document.getElementById('tab-travel').innerHTML=h;
@@ -1262,13 +1172,19 @@ function renderUtilities(){
     +'<div class="util-card"><div class="util-card-title">What every kitchen is told</div>'+guests
     +'<div style="font-size:12.5px;color:#2A3450;line-height:1.6;margin-top:12px">Pork turns up in unexpected places in Japan — tonkotsu ramen broth, gyoza, katsu, some curry roux and many sauces. Restaurants we book are briefed in Japanese in advance. When eating out on your own, show the phrase in the Emergency tab and ask before ordering anything skewered or fried. If anything changes, or there are allergies we have not been told about, please let us know.</div>'
     +'<a class="cta-btn" href="'+CONFIG.diet.url+'" target="_blank" rel="noopener">Update via the dietary form →</a></div>'
-    +'<div class="section-label"><span class="sec-num">3</span>Getting Around</div>'
+    +'<div class="section-label"><span class="sec-num">3</span>What’s Included</div>'
     +'<div class="util-card"><ul class="info-list">'
-    +'<li><span class="info-emoji">🚐</span><div class="info-text"><strong>Your cars</strong>SKY Limo in Tokyo and Kyoto on hosted days; a private vehicle and driver for the whole Izu and Fuji loop (4–9 Nov). The Driver button on each stop reaches us, and we reach the driver in Japanese.</div></li>'
+    +'<li><span class="info-emoji">🗻</span><div class="info-text"><strong>Izu &amp; Mount Fuji · 4–9 November</strong>Fully arranged: accommodation with breakfasts and dinners, the car and driver, Iko-san, rail tickets, luggage and entry fees are all covered. Lunches and drinks are paid on the day.</div></li>'
+    +'<li><span class="info-emoji">🏙️</span><div class="info-text"><strong>Tokyo &amp; Kyoto</strong>Iko-san’s four hosted days, the car on 3 and 10–12 November and both Narita transfers are covered. On your own account: hotel rooms (settled with each hotel), food and drink, rail tickets — including the Kyoto–Tokyo train on 14 November — luggage forwarding, entrance fees, and car time beyond 10 hours a day.</div></li>'
+    +'<li><span class="info-emoji">💴</span><div class="info-text"><strong>No tipping</strong>Tipping is not expected anywhere in Japan.</div></li>'
+    +'</ul></div>'
+    +'<div class="section-label"><span class="sec-num">4</span>Getting Around</div>'
+    +'<div class="util-card"><ul class="info-list">'
+    +'<li><span class="info-emoji">🚐</span><div class="info-text"><strong>Your cars</strong>SKY Limousine for the Narita transfers and on the hosted days (3 and 10–12 Nov); a private vehicle and driver for the whole Izu and Fuji loop (4–9 Nov). No car on 13–15 Nov. The Driver button on each stop reaches us, and we reach the driver in Japanese.</div></li>'
     +'<li><span class="info-emoji">🚕</span><div class="info-text"><strong>GO Taxi app</strong>Japan’s main taxi app in Tokyo and Kyoto — download before you arrive.</div></li>'
     +'<li><span class="info-emoji">📱</span><div class="info-text"><strong>Suica in Apple Wallet</strong>Wallet → + → Transit card → Suica. Works on trains, buses, vending machines and convenience stores — handy for the children too.</div></li>'
     +'</ul></div>'
-    +'<div class="section-label"><span class="sec-num">4</span>Quick Reference</div>'
+    +'<div class="section-label"><span class="sec-num">5</span>Quick Reference</div>'
     +'<div class="util-card"><ul class="info-list">'
     +'<li><span class="info-emoji">🍁</span><div class="info-text"><strong>November weather</strong>Tokyo, Izu and Kyoto 10–19°C by day. Fuji Five Lakes is much colder — near freezing at night and on the lake. Pack hats, gloves and a warm coat for 7–9 November.</div></li>'
     +'<li><span class="info-emoji">🎌</span><div class="info-text"><strong>3 November — Culture Day</strong>A national holiday; sights and shops are busier than usual.</div></li>'
@@ -1278,7 +1194,7 @@ function renderUtilities(){
     +'<li><span class="info-emoji">🔌</span><div class="info-text"><strong>Electricity: 100V · Type A</strong>Flat two-pin plugs — bring an adapter for each device charger.</div></li>'
     +'<li><span class="info-emoji">📡</span><div class="info-text"><strong>eSIM</strong>Activate before landing: Airalo, Holafly or Ubigi.</div></li>'
     +'</ul></div>'
-    +'<div class="section-label"><span class="sec-num">5</span>Dining Etiquette</div>'
+    +'<div class="section-label"><span class="sec-num">6</span>Dining Etiquette</div>'
     +'<div class="util-card">'
     +'<div class="rule-item critical"><span class="rule-icon">🚫</span><div class="rule-text"><strong>No fragrance at counter restaurants — critical</strong>At sushi, omakase and kaiseki counters, no perfume, cologne, scented hair products or fabric softener on clothing. Even a trace interferes with the food for the chef and every other guest.</div></div>'
     +'<div class="rule-item"><span class="rule-icon">⏰</span><div class="rule-text"><strong>Punctuality</strong>Counter meals begin at the same moment for everyone. Arrive 5–10 minutes early.</div></div>'
@@ -1355,8 +1271,8 @@ function renderEmergency(){
 ═══════════════════════════════════════════════════════ */
 var HCIStatement=(function(){
   var BLOBS={
-    guest:'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',
-    staff:'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'
+    guest:'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',
+    staff:'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'
   };
   var ITER=250000, IDLE_MS=120000, idleTm=null, unlocked=false, bound=false;
   function el(){return document.getElementById('tab-statement');}
